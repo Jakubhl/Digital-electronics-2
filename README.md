@@ -2,7 +2,7 @@
 
 Link to your `Digital-electronics-2` GitHub repository:
 
-   [https://github.com/...](https://github.com/Jakubhl/Digital-electronics-2)
+   [https://github.com/Jakubhl](https://github.com/Jakubhl/Digital-electronics-2)
 
 
 ### Blink example
@@ -19,10 +19,10 @@ Link to your `Digital-electronics-2` GitHub repository:
 
 | **b** | **a** |**b or a** | **b and a** | **b xor a** | **not b** |
 | :-: | :-: | :-: | :-: | :-: | :-: |
-| 0 | 0 | 0|0 | 0&0 | 0^0 | ~0 |
-| 0 | 1 | 0|1 | 0&1 | 0^1 | ~1 |
-| 1 | 0 | 1|0 | 1&0 | 1^0 | ~0 |
-| 1 | 1 | 1|1 | 1&1 | 1^1 | ~1 |
+| 0 | 0 | 0`|`0 | 0&0 | 0^0 | ~0 |
+| 0 | 1 | 0`|`1 | 0&1 | 0^1 | ~1 |
+| 1 | 0 | 1`|`0 | 1&0 | 1^0 | ~0 |
+| 1 | 1 | 1`|`1 | 1&1 | 1^1 | ~1 |
 
 
 ### Morse code
