@@ -30,6 +30,36 @@ Link to your `Digital-electronics-2` GitHub repository:
 1. Listing of C code with syntax highlighting which repeats one "dot" and one "comma" on a LED:
 
 ```c
+/* Function definitions ----------------------------------------------*/
+/**********************************************************************
+ * Function: dot function for displaying dot in Morse code on LED
+ * Returns:  none
+ **********************************************************************/
+void dot()
+{
+    // Invert LED in Data Register
+    // PORTB = PORTB xor 0010 0000
+    PORTB = PORTB ^ (1<<LED_GREEN);
+    _delay_ms(DOT_DELAY);
+    PORTB = PORTB ^ (1<<LED_GREEN);
+    _delay_ms(INTER_DELAY);
+}
+/**********************************************************************
+ * Function: dash function for displaying dash in Morse code on LED
+ * Returns:  none
+ **********************************************************************/
+void dash()
+{
+    PORTB = PORTB ^ (1<<LED_GREEN);
+    _delay_ms(DASH_DELAY);
+    PORTB = PORTB ^ (1<<LED_GREEN);
+    _delay_ms(INTER_DELAY);
+}
+/**********************************************************************
+ * Function: Main function where the program execution begins
+ * Purpose:  Display on LED in Morse code "DE2"
+ * Returns:  none
+ **********************************************************************/
 int main(void)
 {
     // Set pin as output in Data Direction Register
@@ -43,14 +73,14 @@ int main(void)
     // Infinite loop
     while (1)
     {
-        // Pause several milliseconds
-        _delay_ms(SHORT_DELAY);
-
-        // WRITE YOUR CODE HERE
+        dash();
+        dot();
     }
 
     // Will never reach this
     return 0;
+}
+
 }
 ```
 
