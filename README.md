@@ -1,4 +1,4 @@
-# Lab 1: YOUR_FIRSTNAME FAMILYNAME
+# Lab 1: Jakub Hlaváček
 
 Link to your `Digital-electronics-2` GitHub repository:
 
@@ -73,18 +73,28 @@ int main(void)
     // Infinite loop
     while (1)
     {
+        // "DE2" in Morse code "-.. . ..---"
         dash();
         dot();
+        dot();
+        _delay_ms(CHAR_DELAY);
+        dot();
+        _delay_ms(CHAR_DELAY);
+        dot();
+        dot();
+        dash();
+        dash();
+        dash();
+        _delay_ms(WORD_DELAY);
     }
 
     // Will never reach this
     return 0;
 }
 
-}
 ```
 
 
 2. Scheme of Morse code application, i.e. connection of AVR device, LED, resistor, and supply voltage. The image can be drawn on a computer or by hand. Always name all components and their values!
 
-   ![your figure]()
+   ![](images/Morse.png)
