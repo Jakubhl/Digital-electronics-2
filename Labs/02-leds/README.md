@@ -102,19 +102,19 @@ See [schematic of Arduino Uno board](../../Docs/arduino_shield.pdf) in docs fold
 | :-: | :-: | :-- |
 | A | x | Microcontroller ATmega328P does not contain port A |
 | B | 0 | Yes (Arduino pin 8) |
-|   | 1 |  |
-|   | 2 |  |
-|   | 3 |  |
-|   | 4 |  |
-|   | 5 |  |
+|   | 1 | 9 |
+|   | 2 | 10 |
+|   | 3 | 11 |
+|   | 4 | 12 |
+|   | 5 | 13 |
 |   | 6 |  |
 |   | 7 |  |
 | C | 0 | Yes (Arduino pin A0) |
-|   | 1 |  |
-|   | 2 |  |
-|   | 3 |  |
-|   | 4 |  |
-|   | 5 |  |
+|   | 1 | A1 |
+|   | 2 | A2 |
+|   | 3 | A3 |
+|   | 4 | A4 |
+|   | 5 | A5 |
 |   | 6 |  |
 |   | 7 |  |
 | D | 0 | Yes (Arduino pin RX<-0) |
