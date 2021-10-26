@@ -1,106 +1,74 @@
-# Lab 4: Jakub Hlaváček
+# Lab 5: Jakub Hlaváček
 
 Link to your `Digital-electronics-2` GitHub repository:
 
    [https://github.com/Jakubhl](https://github.com/Jakubhl/Digital-electronics-2)
 
-### Overflow times
+### 7-segment library
 
-1. Complete table with overflow times.
+1. In your words, describe the difference between Common Cathode and Common Anode 7-segment display.
+   * CC SSD - Zapojí se +5 V na Vcc pin a jednotlivé segmenty jsou ve stavu active-low (svítí po přivedení GND na jejich vstup)
+   
+   * CA SSD - Zapojí se GND na Vcc pin a jednotlivé segmenty jsou ve stavu active-high (svítí po přivedení napájení na jejich vstup)
 
-| **Module** | **Number of bits** | **1** | **8** | **32** | **64** | **128** | **256** | **1024** |
-| :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Timer/Counter0 | 8  | 16u | 128u | -- | 1024u | -- | 4096u | 16384u |
-| Timer/Counter1 | 16 | 4096u | 32768u | -- | 262144u | -- | 1048576u | 4194304u |
-| Timer/Counter2 | 8  | 16u | 128u | 512u | 1024u | 2048u | 4096u | 16384u |
-
-
-### Timer library
-
-1. In your words, describe the difference between common C function and interrupt service routine.
-   * Function
-   * Interrupt service routine
-
-2. Part of the header file listing with syntax highlighting, which defines settings for Timer/Counter0:
+2. Code listing with syntax highlighting of two interrupt service routines (`TIMER0_OVF_vect`, `TIMER0_OVF_vect`) from counter application with at least two digits, ie. values from 00 to 59:
 
 ```c
-/**
- * @name  Definitions of Timer/Counter0
- * @note  F_CPU = 16 MHz
- */
-// WRITE YOUR CODE HERE
-/** @brief Stop timer, prescaler 000 --> STOP */
-#define TIM1_stop()           TCCR1B &= ~((1<<CS12) | (1<<CS11) | (1<<CS10));
-/** @brief Set overflow 4ms, prescaler 001 --> 1 */
-#define TIM1_overflow_4ms()   TCCR1B &= ~((1<<CS12) | (1<<CS11)); TCCR1B |= (1<<CS10);
-/** @brief Set overflow 33ms, prescaler 010 --> 8 */
-#define TIM1_overflow_33ms()  TCCR1B &= ~((1<<CS12) | (1<<CS10)); TCCR1B |= (1<<CS11);
-/** @brief Set overflow 262ms, prescaler 011 --> 64 */
-#define TIM1_overflow_262ms() TCCR1B &= ~(1<<CS12); TCCR1B |= (1<<CS11) | (1<<CS10);
-/** @brief Set overflow 1s, prescaler 100 --> 256 */
-#define TIM1_overflow_1s()    TCCR1B &= ~((1<<CS11) | (1<<CS10)); TCCR1B |= (1<<CS12);
-/** @brief Set overflow 4s, prescaler // 101 --> 1024 */
-#define TIM1_overflow_4s()    TCCR1B &= ~(1<<CS11); TCCR1B |= (1<<CS12) | (1<<CS10);
-/** @brief Enable overflow interrupt, 1 --> enable */
-#define TIM1_overflow_interrupt_enable()  TIMSK1 |= (1<<TOIE1);
-/** @brief Disable overflow interrupt, 0 --> disable */
-#define TIM1_overflow_interrupt_disable() TIMSK1 &= ~(1<<TOIE1);
-
-/**
- * @name  Definitions for 8-bit Timer/Counter0
- * @note  t_OVF = 1/F_CPU * prescaler * 2^n where n = 8, F_CPU = 16 MHz
- */
-/** @brief Stop timer, prescaler 000 --> STOP */
-#define TIM0_stop()           TCCR0B &= ~((1<<CS12) | (1<<CS11) | (1<<CS10));
-/** @brief Set overflow 16us, prescaler 001 --> 1 */
-#define TIM0_overflow_16us()   TCCR0B &= ~((1<<CS12) | (1<<CS11)); TCCR0B |= (1<<CS10);
-/** @brief Set overflow 128us, prescaler 010 --> 8 */
-#define TIM0_overflow_128us()  TCCR0B &= ~((1<<CS12) | (1<<CS10)); TCCR0B |= (1<<CS11);
-/** @brief Set overflow 1ms, prescaler 011 --> 64 */
-#define TIM0_overflow_1ms() TCCR0B &= ~(1<<CS12); TCCR0B |= (1<<CS11) | (1<<CS10);
-/** @brief Set overflow 4ms, prescaler 100 --> 256 */
-#define TIM0_overflow_4ms()    TCCR0B &= ~((1<<CS11) | (1<<CS10)); TCCR0B |= (1<<CS12);
-/** @brief Set overflow 16.3ms, prescaler // 101 --> 1024 */
-#define TIM0_overflow_16ms()    TCCR0B &= ~(1<<CS11); TCCR0B |= (1<<CS12) | (1<<CS10);
-/** @brief Enable overflow interrupt, 1 --> enable */
-#define TIM0_overflow_interrupt_enable()  TIMSK0 |= (1<<TOIE0);
-/** @brief Disable overflow interrupt, 0 --> disable */
-#define TIM0_overflow_interrupt_disable() TIMSK0 &= ~(1<<TOIE0);
-
-/**
- * @name  Definitions for 8-bit Timer/Counter2
- * @note  t_OVF = 1/F_CPU * prescaler * 2^n where n = 8, F_CPU = 16 MHz
- */
-/** @brief Stop timer, prescaler 000 --> STOP */
-#define TIM2_stop()           TCCR2B &= ~((1<<CS12) | (1<<CS11) | (1<<CS10));
-/** @brief Set overflow 16us, prescaler 001 --> 1 */
-#define TIM2_overflow_16us()   TCCR2B &= ~((1<<CS12) | (1<<CS11)); TCCR2B |= (1<<CS10);
-/** @brief Set overflow 128us, prescaler 010 --> 8 */
-#define TIM2_overflow_128us()  TCCR2B &= ~((1<<CS12) | (1<<CS10)); TCCR2B |= (1<<CS11);
-/** @brief Set overflow 512us, prescaler 011 --> 32 */
-#define TIM2_overflow_512us() TCCR2B &= ~(1<<CS12); TCCR2B |= (1<<CS11) | (1<<CS10);
-/** @brief Set overflow 1ms, prescaler 100 --> 64 */
-#define TIM2_overflow_1ms()    TCCR2B &= ~((1<<CS11) | (1<<CS10)); TCCR2B |= (1<<CS12);
-/** @brief Set overflow 2ms, prescaler // 101 --> 128 */
-#define TIM2_overflow_2ms()    TCCR2B &= ~(1<<CS11); TCCR2B |= (1<<CS12) | (1<<CS10);
-/** @brief Set overflow 4ms, prescaler // 110 --> 256 */
-#define TIM2_overflow_4ms()    TCCR2B &= ~(1<<CS10); TCCR2B |= (1<<CS12) | (1<<CS11);
-/** @brief Set overflow 16.3ms, prescaler // 111 --> 1024 */
-#define TIM2_overflow_16ms()    TCCR2B |= (1<<CS12) | (1<<CS11) | (1<<CS10);
-/** @brief Enable overflow interrupt, 1 --> enable */
-#define TIM2_overflow_interrupt_enable()  TIMSK2 |= (1<<TOIE2);
-/** @brief Disable overflow interrupt, 0 --> disable */
-#define TIM2_overflow_interrupt_disable() TIMSK2 &= ~(1<<TOIE2);
-
+/**********************************************************************
+ * Function: Timer/Counter1 overflow interrupt
+ * Purpose:  Increment counter value from 00 to 59.
+ **********************************************************************/
+ISR(TIMER1_OVF_vect)
+{
+    // WRITE YOUR CODE HERE
+uint8_t x = 0, y = 0;
+ISR(TIMER1_OVF_vect)
+{
+    x++;
+    if (x == 10){
+        x = 0;
+        y++;
+        if (y == 6){
+            y = 0;
+        }
+    }
+}
+}
 ```
 
-3. Flowchart figure for function `main()` and interrupt service routine `ISR(TIMER1_OVF_vect)` of application that ensures the flashing of one LED in the timer interruption. When the button is pressed, the blinking is faster, when the button is released, it is slower. Use only a timer overflow and not a delay library.
+```c
+/**********************************************************************
+ * Function: Timer/Counter0 overflow interrupt
+ * Purpose:  Display tens and units of a counter at SSD.
+ **********************************************************************/
+ISR(TIMER0_OVF_vect)
+{
+    static uint8_t pos = 0;
 
-   ![your figure]()
+    // WRITE YOUR CODE HERE
+    if (pos == 0){
+        SEG_update_shift_regs(x,0);
+    }
+    else if (pos == 1){
+        SEG_update_shift_regs(y,1);
+    }
+    pos++;
+    if (pos > 1) {
+        pos = 0;
+    }
+
+}
+```
+
+3. Flowchart figure for function `SEG_clk_2us()` which generates one clock period on `SEG_CLK` pin with a duration of 2&nbsp;us. The image can be drawn on a computer or by hand. Use clear descriptions of the individual steps of the algorithms.
+
+   ![](images/flowchart.png)
 
 
-### Knight Rider
+### Kitchen alarm
 
-1. Scheme of Knight Rider application with four LEDs and a push button, connected according to Multi-function shield. Connect AVR device, LEDs, resistors, push button, and supply voltage. The image can be drawn on a computer or by hand. Always name all components and their values!
+Consider a kitchen alarm with a 7-segment display, one LED and three push buttons: start, +1 minute, -1 minute. Use the +1/-1 minute buttons to increment/decrement the timer value. After pressing the Start button, the countdown starts. The countdown value is shown on the display in the form of mm.ss (minutes.seconds). At the end of the countdown, the LED will start blinking.
 
-   ![your figure]()
+1. Scheme of kitchen alarm; do not forget the supply voltage. The image can be drawn on a computer or by hand. Always name all components and their values.
+
+   ![](images/schema.png)
