@@ -12,8 +12,8 @@ Link to your `Digital-electronics-2` GitHub repository:
    
 2. (Hand-drawn) picture of time signals between ATmega328P and LCD keypad shield (HD44780 driver) when transmitting three character data `De2`.
 
-D = 0x44 = 0b1000100
-e = 0x65 = 0b1100101
+D = 0x44 = 0b1000100,
+e = 0x65 = 0b1100101,
 2 = 0x32 = 0b0110010
 
    ![](images/prubehy.jpg)
