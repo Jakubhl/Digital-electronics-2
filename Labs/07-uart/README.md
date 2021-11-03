@@ -1,44 +1,59 @@
-# Lab 6: Jakub Hlaváček
+# Lab 7: Jakub Hlaváček
 
 Link to your `Digital-electronics-2` GitHub repository:
 
    [https://github.com/Jakubhl](https://github.com/Jakubhl/Digital-electronics-2)
 
-### LCD display module
 
-1. In your words, describe what ASCII table is.
-   * ASCII
+### Analog-to-Digital Conversion
 
-2. (Hand-drawn) picture of time signals between ATmega328P and LCD keypad shield (HD44780 driver) when transmitting three character data `De2`.
+1. Complete table with voltage divider, calculated, and measured ADC values for all five push buttons.
 
-   ![your figure]()
+   | **Push button** | **PC0[A0] voltage** | **ADC value (calculated)** | **ADC value (measured)** |
+   | :-: | :-: | :-: | :-: |
+   | Right  | 0&nbsp;V | 0   |  |
+   | Up     | 0.495&nbsp;V | 101 |  |
+   | Down   |       |     |  |
+   | Left   |       |     |  |
+   | Select |       |     |  |
+   | none   |       |     |  |
 
-
-### Stopwatch
-
-1. Flowchart figure for `TIMER2_OVF_vect` interrupt service routine which overflows every 16&nbsp;ms but it updates the stopwatch LCD approximately every 100&nbsp;ms (6 x 16&nbsp;ms = 100&nbsp;ms). Display tenths of a second and seconds `00:seconds.tenths`. Let the stopwatch counts from `00:00.0` to `00:59.9` and then starts again. The image can be drawn on a computer or by hand. Use clear descriptions of the individual steps of the algorithms.
-
-   ![your figure]()
-
-
-### Custom characters
-
-1. Code listing with syntax highlighting of two custom character definition:
+2. Code listing of ACD interrupt service routine for sending data to the LCD/UART and identification of the pressed button. Always use syntax highlighting and meaningful comments:
 
 ```c
-/* Variables ---------------------------------------------------------*/
-// Custom character definition
-uint8_t customChar[16] = {
+/**********************************************************************
+ * Function: ADC complete interrupt
+ * Purpose:  Display value on LCD and send it to UART.
+ **********************************************************************/
+ISR(ADC_vect)
+{
+    uint16_t value = 0;
+    char lcd_string[4] = "0000";
+
+    value = ADC;                  // Copy ADC result to 16-bit variable
+    itoa(value, lcd_string, 10);  // Convert decimal value to string
+
     // WRITE YOUR CODE HERE
 
-};
+}
 ```
 
 
-### Kitchen alarm
+### UART communication
 
-Consider a kitchen alarm with an LCD, one LED and three push buttons: start, +1 minute, -1 minute. Use the +1/-1 minute buttons to increment/decrement the timer value. After pressing the Start button, the countdown starts. The countdown value is shown on the display in the form of mm.ss (minutes.seconds). At the end of the countdown, the LED will start blinking.
+1. (Hand-drawn) picture of UART signal when transmitting three character data `De2` in 4800 7O2 mode (7 data bits, odd parity, 2 stop bits, 4800&nbsp;Bd).
 
-1. Scheme of kitchen alarm; do not forget the supply voltage. The image can be drawn on a computer or by hand. Always name all components and their values.
+   ![your figure]()
+
+2. Flowchart figure for function `uint8_t get_parity(uint8_t data, uint8_t type)` which calculates a parity bit of input 8-bit `data` according to parameter `type`. The image can be drawn on a computer or by hand. Use clear descriptions of the individual steps of the algorithms.
+
+   ![your figure]()
+
+
+### Temperature meter
+
+Consider an application for temperature measurement and display. Use temperature sensor [TC1046](http://ww1.microchip.com/downloads/en/DeviceDoc/21496C.pdf), LCD, one LED and a push button. After pressing the button, the temperature is measured, its value is displayed on the LCD and data is sent to the UART. When the temperature is too high, the LED will start blinking.
+
+1. Scheme of temperature meter. The image can be drawn on a computer or by hand. Always name all components and their values.
 
    ![your figure]()
