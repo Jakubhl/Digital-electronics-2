@@ -13,10 +13,10 @@ Link to your `Digital-electronics-2` GitHub repository:
    | :-: | :-: | :-: | :-: |
    | Right  | 0&nbsp;V | 0   |  |
    | Up     | 0.495&nbsp;V | 101 |  |
-   | Down   |       |     |  |
-   | Left   |       |     |  |
-   | Select |       |     |  |
-   | none   |       |     |  |
+   | Down   | 1,2 V | 245 |  |
+   | Left   | 1,97 V | 403 |  |
+   | Select | 3,17 V| 648 |  |
+   | none   | 5 V | 1023 |  |
 
 2. Code listing of ACD interrupt service routine for sending data to the LCD/UART and identification of the pressed button. Always use syntax highlighting and meaningful comments:
 
@@ -32,9 +32,48 @@ ISR(ADC_vect)
 
     value = ADC;                  // Copy ADC result to 16-bit variable
     itoa(value, lcd_string, 10);  // Convert decimal value to string
-
+   
     // WRITE YOUR CODE HERE
-
+    
+    lcd_gotoxy(8, 0);
+    lcd_puts("    ");
+    uart_puts("\033[4;32m");
+    uart_puts(" value: ");
+    uart_puts(lcd_string);
+    uart_puts(" ");
+    
+    lcd_gotoxy(13, 0);
+    lcd_puts("    ");
+    itoa(value, lcd_string, 16);  
+    lcd_gotoxy(13, 0);
+    lcd_puts(lcd_string);
+    
+    uart_puts(lcd_string);
+    uart_puts("\r\n   key: ");
+    lcd_gotoxy(8, 0);
+    lcd_puts("    ");
+    
+    lcd_gotoxy(8, 1);
+    if (value < 80) {
+        lcd_puts("Right");
+        uart_puts("Right");
+    } else if (value < 150) {
+        lcd_puts("Up");
+        uart_puts("Up");
+    } else if (value < 350) {
+        lcd_puts("Down");
+        uart_puts("Down");
+    } else if (value < 550) {
+        lcd_puts("Left");
+        uart_puts("Left");
+    } else if (value < 800) {
+        lcd_puts("Select");
+        uart_puts("Select");
+    } else {
+        lcd_puts("None");
+        uart_puts("None");
+    }
+    uart_puts("\r\n\r\n");
 }
 ```
 
