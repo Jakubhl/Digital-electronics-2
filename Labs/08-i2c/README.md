@@ -14,7 +14,9 @@ Link to your `Digital-electronics-2` GitHub repository:
    * SPI pins
    * external interrupt pins INT0, INT1
 
-   ![your figure](Images/arduino_uno_pinout.png)
+   ![Source: https://www.sabelectronic.com/2020/06/arduino-uno-pins.html](images/ARDUINO_pins.png)
+
+
 
 ### I2C
 
@@ -29,8 +31,9 @@ Link to your `Digital-electronics-2` GitHub repository:
 ISR(TIMER1_OVF_vect)
 {
     static state_t state = STATE_IDLE;  // Current state of the FSM
-    static uint8_t addr = 7;            // I2C slave address
-    uint8_t result = 1;                 // ACK result from the bus
+    static uint8_t addr = 7;             // I2C slave address
+    static uint8_t devices = 0;            
+    uint8_t result = 0;                 // ACK result from the bus
     char uart_string[2] = "00"; // String for converting numbers by itoa()
 
     // FSM
@@ -40,7 +43,15 @@ ISR(TIMER1_OVF_vect)
     case STATE_IDLE:
         addr++;
         // If slave address is between 8 and 119 then move to SEND state
-
+        if(addr<120)state = STATE_SEND;
+            else{
+                 addr=7;
+                 uart_puts("\r\nNumber of found devices:\r\n ");
+                 itoa(devices, uart_string, 10);
+                 uart_puts(uart_string);
+                 devices=0;
+                 }
+        
         break;
     
     // Transmit I2C slave address and get result
@@ -56,14 +67,27 @@ ISR(TIMER1_OVF_vect)
         twi_stop();
         /* Test result from I2C bus. If it is 0 then move to ACK state, 
          * otherwise move to IDLE */
+        if(result==0){devices++;
+                      state = STATE_ACK;
+                      }
+        else{
+            uart_puts(" -- ");
+            state = STATE_IDLE;}
+        
+        
+        /* Test result from I2C bus. If it is 0 then move to ACK state, 
+         * otherwise move to IDLE */
 
         break;
 
     // A module connected to the bus was found
     case STATE_ACK:
         // Send info about active I2C slave to UART and move to IDLE
-
+        itoa(addr, uart_string, 16);
+        uart_puts(uart_string);
+        state = STATE_IDLE;
         break;
+        
 
     // If something unexpected happens then move to IDLE
     default:
@@ -75,7 +99,7 @@ ISR(TIMER1_OVF_vect)
 
 2. (Hand-drawn) picture of I2C signals when reading checksum (only 1 byte) from DHT12 sensor. Indicate which specific moments control the data line master and which slave.
 
-   ![your figure]()
+   ![](images/prubehy.jpg)
 
 ### Meteo station
 
@@ -83,4 +107,4 @@ Consider an application for temperature and humidity measurement and display. Us
 
 1. FSM state diagram picture of meteo station. The image can be drawn on a computer or by hand. Concise name of individual states and describe the transitions between them.
 
-   ![your figure]()
+   ![](images/flowchart.jpg)
