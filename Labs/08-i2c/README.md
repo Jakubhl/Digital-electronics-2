@@ -14,7 +14,7 @@ Link to your `Digital-electronics-2` GitHub repository:
    * SPI pins
    * external interrupt pins INT0, INT1
 
-   ![Source: https://www.sabelectronic.com/2020/06/arduino-uno-pins.html](images/ARDUINO_pins.png)
+   ![Source: https://www.sabelectronic.com/2020/06/arduino-uno-pins.html](images/ARDUINO_pins.jpg)
 
 
 
